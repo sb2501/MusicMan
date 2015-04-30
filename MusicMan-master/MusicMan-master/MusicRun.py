@@ -32,7 +32,9 @@ def main():
     done = False # Loop until the user clicks the close button.
 
     start = False # Starts game
-    choice = "Eye_walk_" # Character choice
+    choice = "Eye_Walk_"# Character choice
+ 
+    
     
     clock = pygame.time.Clock() # Used to manage how fast the screen updates
     
@@ -84,7 +86,7 @@ def main():
             for event in pygame.event.get(): # User did something
                 if event.type == pygame.QUIT: # If user clicked close
                     done = True # Flag that we are done so we exit this loop
-
+            
             #--- Draw character selectors---------------
 
             char1 = CharacterSelector(200, 300, "Stalk_Walk_")
@@ -99,7 +101,19 @@ def main():
 
             clock.tick(60)
 
-        
+            
+            button = pygame.mouse.get_pressed() #Checks if mouse button is pressed
+            mouse_pos = pygame.mouse.get_pos() #Gets current mouse position
+
+            #Starts game when a character is selected
+            
+            if(mouse_pos[0] >= char2.x or mouse_pos[0] <= char2.x + 28):
+                if(mouse_pos[1] >= char2.y or mouse_pos[1] <= char2.y + 62):
+                    if(button[0]):
+                        choice = "Eye_Walk_"
+                        start = True
+                
+
         platform1.draw(screen)
         platform2.draw(screen)
         
@@ -109,7 +123,7 @@ def main():
 
         #---Player's Behavior----------------------------
 
-        player.update(mod)
+        player.update(mod,choice)
 
         #---Platform Behavior----------------------------
 
@@ -137,6 +151,12 @@ def main():
         #---Handles all key down events-----------------
 
         player.handle_keys(mod)
+
+
+
+        #---Collision Detection-------------------------
+        if(player.x >= platform1.x or player.x <= platform1.x + 100) and (player.y <= platform1.y + 20):
+            player.y += 2
     
         #---Updates the screen with what we've drawn----
 

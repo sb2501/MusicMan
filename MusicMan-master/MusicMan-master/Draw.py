@@ -11,16 +11,14 @@ class Player(object):
         self.image.set_colorkey(WHITE)
         self.x = 140 # x position object is drawn at
         self.y = 300 # y position object is drawn at
+        self.width = 28
+        self.height = 62
         self.stat = 1 # counter for update()
         self.walk = 12 # Controls how fast animation loops
         self.isJump = False
         self.speed = 2
     
-    def collision(rect1,rect2):
-        if (rect1.x >= rect2.x) or (rect1.x + rect1.width < rect2.x + rect2.width) and (rect1.y < rect2.y) or (rect1.y + rect1.width > rect2.y + rect2.width):
-            self.y += 2
-        else:
-            self.y -= 2
+    
 
     def handle_keys(self, mod):
         #Handles all key down events
@@ -43,8 +41,6 @@ class Player(object):
             self.y += 2
 
 
-        rect_player = pygame.Rect(self.x,self.y,28,62)
-        rect_platform1 = pygame.Rect(150,238,100,20)
 
 
                 
@@ -112,6 +108,7 @@ class CharacterSelector(object):
         
     def draw(self, window):
         window.blit(self.image, (self.x, self.y))
+        window.blit(pygame.image.load("Stage.png").convert(), (self.x - 10, self.y + 50))
 
     def update(self, option):
         if (self.stat < self.walk * 2):    #draws first animation
