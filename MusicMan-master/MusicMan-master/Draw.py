@@ -6,7 +6,7 @@ WHITE = (255,255,255)
 
 class Player(object):
 
-    def __init__(self, option): #Constructor
+    def __init__(self, option, music_set): #Constructor
         self.image = pygame.image.load(option + "1.png").convert()  #Loads Character
         self.image.set_colorkey(WHITE)  #Sets color to turn transparent
         self.x = 140 # x position object is drawn at

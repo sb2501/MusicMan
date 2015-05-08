@@ -43,7 +43,7 @@ def main():
     cloudX, cloudY = SCREEN_WIDTH, random.randrange(10, 100) #Starting pos of clouds
     floorX_1, floorX_2 = 0, 700 #Placement of grass running surface
     
-    player = Player(choice)   #Creation of player object
+
     platform1 = Platform(150, 238,"Platform_02", 26, 90)    #Creates Vine Platform Object
     platform2 = Platform(150, 114,"Platform_01", 20, 90)    #Creates Cloud Platform Object
     platform3 = Platform(150, 351,"Platform_03", 18, 90)    #Creates Stone Platform Object
@@ -53,19 +53,6 @@ def main():
     #***Sound Imports******************************************
     #-Music---------------------------------------------------
     pygame.mixer.music.load('A Wish.ogg')   #Loads song into pygame
-    Bounce1 = pygame.mixer.Sound('Bouncy2.wav')  #Loads Bouncy 2
-    Bounce2 = pygame.mixer.Sound('Bouncy3.wav')  #Loads Bouncy 3
-    Eyewalk1 = pygame.mixer.Sound('EyeWalker1.wav')  #Loads Eyewalker1
-    Eyewalk2 = pygame.mixer.Sound('EyeWalker2.wav')  #Loads Eyewalker2
-    Eyewalk3 = pygame.mixer.Sound('EyeWalker3.wav')  #Loads Eyewalker3
-    Walker1 = pygame.mixer.Sound('Walker1.wav')  #Loads Eyewalker1
-    Walker2 = pygame.mixer.Sound('Walker2.wav')  #Loads Eyewalker2
-    Walker3 = pygame.mixer.Sound('Walker3.wav')  #Loads Eyewalker3
-
-    #--Song Groups------------------------------------------------
-    bounceSongs = [Bounce1, Bounce2]    #Holds each characters songs
-    eyeSongs = [Eyewalk1, Eyewalk2, Eyewalk3]   #Holds each characters songs
-    walkerSongs = [Walker1, Walker2, Walker3]   #Holds each characters songs
     
     #-Sound Effects-------------------------------------------
     BirdSquark = pygame.mixer.Sound('Bird squark2.wav')    #Loads sound effect.
@@ -165,21 +152,34 @@ def main():
             if(mouse_pos[0] >= char2.x and mouse_pos[0] <= char2.x + 28):
                 if(mouse_pos[1] >= char2.y and mouse_pos[1] <= char2.y + 62):
                     if(button[0]):
+                        Eyewalk1 = pygame.mixer.Sound('EyeWalker1.wav')  #Loads Eyewalker1 music loop
+                        Eyewalk2 = pygame.mixer.Sound('EyeWalker2.wav')  #Loads Eyewalker2 music loop
+                        Eyewalk3 = pygame.mixer.Sound('EyeWalker3.wav')  #Loads Eyewalker3 music loop
+                        musicSet = [Eyewalk1, Eyewalk2, Eyewalk3]
                         choice = "Eye_Walk_"
                         start = True
 
             if(mouse_pos[0] >= char1.x and mouse_pos[0] <= char1.x + 28):
                 if(mouse_pos[1] >= char1.y and mouse_pos[1] <= char1.y + 62):
                     if(button[0]):
+                        Walker1 = pygame.mixer.Sound('Walker1.wav')  #Loads Eyewalker1 music loop
+                        Walker2 = pygame.mixer.Sound('Walker2.wav')  #Loads Eyewalker2 music loop
+                        Walker3 = pygame.mixer.Sound('Walker3.wav')  #Loads Eyewalker3 music loop
+                        musicSet = [Walker1, Walker2, Walker3]
                         choice = "Stalk_Walk_"
                         start = True
-
             
             if(mouse_pos[0] >= char3.x and mouse_pos[0] <= char3.x + 28):
                 if(mouse_pos[1] >= char3.y and mouse_pos[1] <= char3.y + 62):
                     if(button[0]):
+                        Bounce1 = pygame.mixer.Sound('Bouncy2.wav')  #Loads Bouncy 2 music loop
+                        Bounce2 = pygame.mixer.Sound('Bouncy3.wav')  #Loads Bouncy 3 music loop
+                        musicSet = [Bounce1, Bounce2]
                         choice = "Blob_Walk_"
                         start = True
+
+            if (start = true)
+                player = Player(choice, musicSet)   #Creation of player object
 
             pygame.display.flip()
 
