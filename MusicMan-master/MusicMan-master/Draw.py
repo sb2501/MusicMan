@@ -169,3 +169,4 @@ class CharacterSelector(object):
         if (self.stat > self.walk * 16):   #loops back to beginning animation
             self.stat = 1
 
+
