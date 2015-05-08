@@ -50,9 +50,37 @@ def main():
     
     mod = [0] #determines how fast scenery moves
 
-    #pygame.mixer.music.load('A Wish.ogg')   #Loads song into pygame
-    #pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)     #A trigger event for when song ends
-    #pygame.mixer.music.play(50) #!?!?Not a permenent solution for infinite loop!?!?    
+    #***Sound Imports******************************************
+    #-Music---------------------------------------------------
+    pygame.mixer.music.load('A Wish.ogg')   #Loads song into pygame
+    Bounce1 = pygame.mixer.Sound('Bouncy2.wav')  #Loads Bouncy 2
+    Bounce2 = pygame.mixer.Sound('Bouncy3.wav')  #Loads Bouncy 3
+    Eyewalk1 = pygame.mixer.Sound('EyeWalker1.wav')  #Loads Eyewalker1
+    Eyewalk2 = pygame.mixer.Sound('EyeWalker2.wav')  #Loads Eyewalker2
+    Eyewalk3 = pygame.mixer.Sound('EyeWalker3.wav')  #Loads Eyewalker3
+    Walker1 = pygame.mixer.Sound('Walker1.wav')  #Loads Eyewalker1
+    Walker2 = pygame.mixer.Sound('Walker2.wav')  #Loads Eyewalker2
+    Walker3 = pygame.mixer.Sound('Walker3.wav')  #Loads Eyewalker3
+
+    #--Song Groups------------------------------------------------
+    bounceSongs = [Bounce1, Bounce2]    #Holds each characters songs
+    eyeSongs = [Eyewalk1, Eyewalk2, Eyewalk3]   #Holds each characters songs
+    walkerSongs = [Walker1, Walker2, Walker3]   #Holds each characters songs
+    
+    #-Sound Effects-------------------------------------------
+    BirdSquark = pygame.mixer.Sound('Bird squark2.wav')    #Loads sound effect.
+    Cat = pygame.mixer.Sound('CAT03.wav')    #Loads cat sound effect.
+    ComicMosquito = pygame.mixer.Sound('Comic mosquito.wav')    #Loads mosquito sound effect.
+    Humanoid = pygame.mixer.Sound('Humanoid.wav')    #Loads humanoid sound effect.
+    Move1 = pygame.mixer.Sound('Move1.wav')    #Loads move1 sound effect.
+    Move2 = pygame.mixer.Sound('Move2.wav')    #Loads move2 sound effect.
+    Slurp = pygame.mixer.Sound('Slurp1.wav')    #Loads sound effect.
+    Slurp2 = pygame.mixer.Sound('Slurp2.wav')    #Loads sound effect.
+    SPLODGE = pygame.mixer.Sound('SPLODGE.wav')    #Loads sound effect.
+    TimeMachine = pygame.mixer.Sound('Time machine loop2.wav')    #Loads sound effect.
+    Whoosh = pygame.mixer.Sound('WHOOSH08.WAV')    #Loads sound effect.
+    Zingle = pygame.mixer.Sound('ZINGLE.WAV')    #Loads sound effect.
+
 
     #jump_sound = pygame.mixer.Sound("spin_jump.wav") #Jump Sound
 
