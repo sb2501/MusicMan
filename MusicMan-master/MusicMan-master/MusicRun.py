@@ -1,3 +1,6 @@
+#Developed by: Timothy Perry, Simone Boyd, Quinn Daugherty, and Paul Tuttle
+#Class: CST 205
+
 # Import a library of functions called 'pygame'
 import os
 import pygame
@@ -23,6 +26,7 @@ mod = 0
 def main():
     
     pygame.init()# Initialize the game engine
+    pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=4096) #Initialize the music mixer
 
     size = (700, 500)   #Window Size
     screen = pygame.display.set_mode(size)  #Window Creation
@@ -43,16 +47,31 @@ def main():
     cloudX, cloudY = SCREEN_WIDTH, random.randrange(10, 100) #Starting pos of clouds
     floorX_1, floorX_2 = 0, 700 #Placement of grass running surface
     
+    player = Player()   #Creation of player object
 
-    platform1 = Platform(150, 238,"Platform_02", 26, 90)    #Creates Vine Platform Object
-    platform2 = Platform(150, 114,"Platform_01", 20, 90)    #Creates Cloud Platform Object
-    platform3 = Platform(150, 351,"Platform_03", 18, 90)    #Creates Stone Platform Object
+   
+
+    rockPlatforms = []
+    vinePlatforms = []
+    cloudPlatforms = []
     
     mod = [0] #determines how fast scenery moves
 
-    #***Sound Imports******************************************
+     #***Sound Imports******************************************
     #-Music---------------------------------------------------
-    pygame.mixer.music.load('A Wish.ogg')   #Loads song into pygame
+    Bounce1 = pygame.mixer.Sound('Bouncy2.wav')  #Loads Bouncy 2
+    Bounce2 = pygame.mixer.Sound('Bouncy3.wav')  #Loads Bouncy 3
+    Eyewalk1 = pygame.mixer.Sound('EyeWalker1.wav')  #Loads Eyewalker1
+    Eyewalk2 = pygame.mixer.Sound('EyeWalker2.wav')  #Loads Eyewalker2
+    Eyewalk3 = pygame.mixer.Sound('EyeWalker3.wav')  #Loads Eyewalker3
+    Walker1 = pygame.mixer.Sound('Walker1.wav')  #Loads Eyewalker1
+    Walker2 = pygame.mixer.Sound('Walker2.wav')  #Loads Eyewalker2
+    Walker3 = pygame.mixer.Sound('Walker3.wav')  #Loads Eyewalker3
+
+    #--Song Groups------------------------------------------------
+    bounceSongs = [Bounce1, Bounce2]    #Holds each characters songs
+    eyeSongs = [Eyewalk1, Eyewalk2, Eyewalk3]   #Holds each characters songs
+    walkerSongs = [Walker1, Walker2, Walker3]   #Holds each characters songs
     
     #-Sound Effects-------------------------------------------
     BirdSquark = pygame.mixer.Sound('Bird squark2.wav')    #Loads sound effect.
@@ -68,8 +87,7 @@ def main():
     Whoosh = pygame.mixer.Sound('WHOOSH08.WAV')    #Loads sound effect.
     Zingle = pygame.mixer.Sound('ZINGLE.WAV')    #Loads sound effect.
 
-
-    #jump_sound = pygame.mixer.Sound("spin_jump.wav") #Jump Sound
+    #---Image Import-----------------------------------
 
     floor_1 = pygame.image.load("Grass.png").convert()  #loads Grass Platform
     floor_2 = pygame.image.load("Grass.png").convert()  #loads Grass Platform
@@ -81,28 +99,69 @@ def main():
 
         for event in pygame.event.get(): # User did something
             if (event.type == pygame.QUIT): # If user clicked close
+                pygame.quit()
                 done = True # Flag that we are done so we exit this loop
 
+        #--- Creation of platform ------------------------
+        global rockPlatforms    # Holds all rock platform objects
+        global vinePlatforms    # Holds all vine platform objects
+        global cloudPlatforms   # Holds all cloud platform objects
+        
+        counter1 = 0    #holds current position in vine Platform list
+        howManyPlat1 = random.randint(3,6) # determines how many platforms will be generated
+
+        if(len(vinePlatforms) == 0):    # If there are no vine platforms, make more
+            for x in range(0, howManyPlat1):
+                if(len(vinePlatforms) == 0):
+                    vinePlatforms.append(Platform(700, 238,"Platform_02", 26, 90))  #makes first vine object at the beginning right
+                else:
+                    vinePlatforms.append(Platform(vinePlatforms[counter1 - 1].posX() + 90, 238, "Platform_02", 26, 90))  #makes every other vine attached to it
+                counter1 += 1
+
+        counter2 = 0    #holds current position in cloud Platform list
+        howManyPlat2 = random.randint(3,6)
+        if(len(cloudPlatforms) == 0):    # If there are no cloud platforms, make more
+            for x in range(0, howManyPlat2):
+                if(len(cloudPlatforms) == 0):
+                    cloudPlatforms.append(Platform(700, 114,"Platform_01", 20, 90))  #makes first cloud object at the beginning right
+                else:
+                    cloudPlatforms.append(Platform(cloudPlatforms[counter2 - 1].posX() + 90, 114, "Platform_01", 20, 90))  #makes every other cloud attached to it
+                counter2 += 1
+
+        counter3 = 0    #holds current position in rock Platform list
+        howManyPlat3 = random.randint(3,6)
+        if(len(rockPlatforms) == 0):    # If there are no rock platforms, make more
+            for x in range(0, howManyPlat3):
+                if(len(rockPlatforms) == 0):
+                    rockPlatforms.append(Platform(700, 351,"Platform_03", 18, 90))  #makes first cloud object at the beginning right
+                else:
+                    rockPlatforms.append(Platform(rockPlatforms[counter3 - 1].posX() + 90, 351, "Platform_03", 18, 90))  #makes every other cloud attached to it
+                counter3 += 1
+        #-------------------------------------------------
+
         onPlatform = [] #Carries each platforms location 
-        onPlatform.append(platform1.coord())
-        onPlatform.append(platform2.coord())
-        onPlatform.append(platform3.coord())
-        player.isPlatform(onPlatform)
+
+        for x in vinePlatforms:
+            onPlatform.append(x.coord())
+
+        for x in cloudPlatforms:
+            onPlatform.append(x.coord())
+
+        for x in rockPlatforms:
+            onPlatform.append(x.coord())
+            
+        player.isPlatform(onPlatform, len(vinePlatforms) + len(cloudPlatforms) + len(rockPlatforms))
 
         #---Updates Screen with new drawings------------
                 
         screen.fill(WHITE) #Clears screen to white
 
- 
         pygame.draw.rect(screen, (100,100,200), [0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 150]) #Sky Backdrop
         
         screen.blit(floor_1,(floorX_1, 350))    #Draws Grass to screen
         screen.blit(floor_2,(floorX_2, 350))    #Draws Grass to screen
 
-     
-
-
-        #---Menu Loop-----------------------------------
+        #---Menu Loop-----------------------------------Quinn & Simone
     
         while not start and not done:
 
@@ -110,9 +169,10 @@ def main():
             
             for event in pygame.event.get(): # User did something
                 if event.type == pygame.QUIT: # If user clicked close
+                    pygame.quit()
                     done = True # Flag that we are done so we exit this loop
 
-            #Animated Title
+            #Animated Title - Simone
             if(time < total - 40):
                 image = pygame.image.load("Title1.png").convert()
                 image.set_colorkey(WHITE)
@@ -133,6 +193,12 @@ def main():
 
             time += 5
 
+            #Game Instructions
+            text = pygame.image.load("InstructionText.gif").convert()
+            text.set_colorkey(WHITE)
+
+            screen.blit(text, (190, 350))
+
             #--- Draw character selectors---------------
 
             char1 = CharacterSelector(200, 300, "Stalk_Walk_")
@@ -143,64 +209,64 @@ def main():
             char2.draw(screen)
             char3.draw(screen)
 
-           
+            
             button = pygame.mouse.get_pressed() #Checks if mouse button is pressed
             mouse_pos = pygame.mouse.get_pos() #Gets current mouse position
    
 
-            #Starts game when a character is selected
+            #Starts game when a character is selected - Simone
             if(mouse_pos[0] >= char2.x and mouse_pos[0] <= char2.x + 28):
                 if(mouse_pos[1] >= char2.y and mouse_pos[1] <= char2.y + 62):
                     if(button[0]):
-                        Eyewalk1 = pygame.mixer.Sound('EyeWalker1.wav')  #Loads Eyewalker1 music loop
-                        Eyewalk2 = pygame.mixer.Sound('EyeWalker2.wav')  #Loads Eyewalker2 music loop
-                        Eyewalk3 = pygame.mixer.Sound('EyeWalker3.wav')  #Loads Eyewalker3 music loop
-                        musicSet = [Eyewalk1, Eyewalk2, Eyewalk3]
                         choice = "Eye_Walk_"
                         start = True
 
             if(mouse_pos[0] >= char1.x and mouse_pos[0] <= char1.x + 28):
                 if(mouse_pos[1] >= char1.y and mouse_pos[1] <= char1.y + 62):
                     if(button[0]):
-                        Walker1 = pygame.mixer.Sound('Walker1.wav')  #Loads Eyewalker1 music loop
-                        Walker2 = pygame.mixer.Sound('Walker2.wav')  #Loads Eyewalker2 music loop
-                        Walker3 = pygame.mixer.Sound('Walker3.wav')  #Loads Eyewalker3 music loop
-                        musicSet = [Walker1, Walker2, Walker3]
                         choice = "Stalk_Walk_"
                         start = True
+
             
             if(mouse_pos[0] >= char3.x and mouse_pos[0] <= char3.x + 28):
                 if(mouse_pos[1] >= char3.y and mouse_pos[1] <= char3.y + 62):
                     if(button[0]):
-                        Bounce1 = pygame.mixer.Sound('Bouncy2.wav')  #Loads Bouncy 2 music loop
-                        Bounce2 = pygame.mixer.Sound('Bouncy3.wav')  #Loads Bouncy 3 music loop
-                        musicSet = [Bounce1, Bounce2]
                         choice = "Blob_Walk_"
                         start = True
-
-            if (start = true)
-                player = Player(choice, musicSet)   #Creation of player object
 
             pygame.display.flip()
 
             clock.tick(60)
-                
 
+        
+        for x in vinePlatforms:
+            x.draw(screen)
 
-        platform1.draw(screen)  #Draws Vine platform
-        platform2.draw(screen)  #Draws Cloud platform
-        platform3.draw(screen)  #Draws Stone Platform
+        for x in cloudPlatforms:
+            x.draw(screen)
+
+        for x in rockPlatforms:
+            x.draw(screen)
+        
         player.draw(screen) #Draws player to screen
+
+       
 
         #---Player's Behavior----------------------------
 
-        player.update(mod, choice)
+        player.update(mod)
+
+  
+        
 
         #---Platform Behavior----------------------------
 
-        platform1.update(mod)
-        platform2.update(mod)
-        platform3.update(mod)
+        for x in vinePlatforms:
+            x.update(mod, vinePlatforms)
+        for x in cloudPlatforms:
+            x.update(mod, cloudPlatforms)
+        for x in rockPlatforms:
+            x.update(mod, rockPlatforms)
         
         #---Ground Behavior------------------------------
 
@@ -208,9 +274,9 @@ def main():
         floorX_2 -= 1 + mod[0]
 
         if(floorX_1 <= -700):   #if floor platform goes out of left screen    
-            floorX_1 = 700     #Returns floor platform to the right of the screen
+            floorX_1 = floorX_2 + 700     #Attaches floor behind of the previous floor 
         if(floorX_2 <= -700):
-            floorX_2 = 700
+            floorX_2 = floorX_1 + 700
 
         #---Handles all key down events-----------------
 
@@ -224,6 +290,4 @@ def main():
 
         clock.tick(60)
 
-    pygame.quit()
-    
 main()
