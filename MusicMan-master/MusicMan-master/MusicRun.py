@@ -31,7 +31,7 @@ def main():
     size = (700, 500)   #Window Size
     screen = pygame.display.set_mode(size)  #Window Creation
     pygame.display.set_caption("MusicRun")  #Displays Window Title
-
+   
     
     done = False # Loop until the user clicks the close button.
     start = False
@@ -49,7 +49,7 @@ def main():
     
     player = Player()   #Creation of player object
 
-   
+    enemie = Enemie() #Creates game enemies
 
     rockPlatforms = []
     vinePlatforms = []
@@ -92,6 +92,8 @@ def main():
     floor_1 = pygame.image.load("Grass.png").convert()  #loads Grass Platform
     floor_2 = pygame.image.load("Grass.png").convert()  #loads Grass Platform
 
+   
+    
     #---Main Program Loop-------------------------------
 
     while not done:
@@ -172,6 +174,11 @@ def main():
                     pygame.quit()
                     done = True # Flag that we are done so we exit this loop
 
+           
+
+            if(start == True):
+                pygame.mixer.music.stop()
+                
             #Animated Title - Simone
             if(time < total - 40):
                 image = pygame.image.load("Title1.png").convert()
@@ -194,10 +201,10 @@ def main():
             time += 5
 
             #Game Instructions
-            text = pygame.image.load("InstructionText.gif").convert()
+            text = pygame.image.load("Instructions.png").convert()
             text.set_colorkey(WHITE)
 
-            screen.blit(text, (190, 350))
+            screen.blit(text, (5, 350))
 
             #--- Draw character selectors---------------
 
@@ -250,15 +257,19 @@ def main():
         
         player.draw(screen) #Draws player to screen
 
-       
-
+     
         #---Player's Behavior----------------------------
 
         player.update(mod)
 
-  
-        
 
+        #---Enemie Behavior----------------------------------
+
+     
+        
+           
+            
+            
         #---Platform Behavior----------------------------
 
         for x in vinePlatforms:
