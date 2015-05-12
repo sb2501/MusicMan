@@ -47,9 +47,8 @@ def main():
     cloudX, cloudY = SCREEN_WIDTH, random.randrange(10, 100) #Starting pos of clouds
     floorX_1, floorX_2 = 0, 700 #Placement of grass running surface
     
-    player = Player()   #Creation of player object
+    player = Player(choice)   #Creation of player object
 
-    enemie = Enemie() #Creates game enemies
 
     rockPlatforms = []
     vinePlatforms = []
@@ -175,9 +174,6 @@ def main():
                     done = True # Flag that we are done so we exit this loop
 
            
-
-            if(start == True):
-                pygame.mixer.music.stop()
                 
             #Animated Title - Simone
             if(time < total - 40):
@@ -260,7 +256,7 @@ def main():
      
         #---Player's Behavior----------------------------
 
-        player.update(mod)
+        player.update(mod, choice)
 
 
         #---Enemie Behavior----------------------------------
