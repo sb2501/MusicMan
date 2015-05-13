@@ -195,25 +195,3 @@ class CharacterSelector(object):
             self.stat = 1
 
 
-
-class Enemie(object):
-    def __init__(self):
-        self.x = 750
-        self.y = 50
-        self.width = 80
-        self.height = 31
-        self.image = pygame.image.load("Enemie1.png").convert()
-        self.image.set_colorkey(WHITE)
-        self.egg = pygame.image.load("Egg.png").convert()
-        self.egg.set_colorkey(WHITE)
-        self.inDistance = False
-
-    def draw(self, window):
-        window.blit(self.image, (self.x, self.y))
-
-    def update(self, mod):
-        self.x -= 1 + mod[0]
-
-        if(self.x < 0):
-            self.x = 750
-        
